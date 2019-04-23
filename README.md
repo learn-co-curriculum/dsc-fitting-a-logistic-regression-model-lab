@@ -14,10 +14,10 @@ You will be able to:
 ## Review
 
 The stats model example we covered had four essential parts:
-    * Importing the data
-    * Defining X and y
-    * Fitting the model
-    * Analyzing model results
+* Importing the data
+* Defining X and y
+* Fitting the model
+* Analyzing model results
 
 The corresponding code to these four steps was:
 
