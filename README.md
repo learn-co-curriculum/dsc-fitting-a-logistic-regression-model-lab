@@ -33,11 +33,9 @@ salaries = pd.read_csv("salaries_final.csv", index_col = 0)
 
 #Step 2: Defining X and y
 # Convert race and sex using get_dummies
-cols = ["Race", "Sex"]
-X = pd.get_dummies(salaries[cols], drop_first=True, dtype=float)
-# Add age column to X
-X = pd.concat([X, salaries["Age"].astype(float)], axis=1)
-# Convert target using get_dummies
+x_feats = ["Race", "Sex", "Age"]
+X = pd.get_dummies(salaries[x_feats], drop_first=True, dtype=float)
+# Convert target using get dummies
 y = pd.get_dummies(salaries["Target"], dtype=float)
 
 #Step 3: Fitting the model
@@ -50,7 +48,7 @@ result.summary()
 
 Most of this should be fairly familiar to you; importing data with Pandas, initializing a regression object, and calling the fit method of that object. However, step 2 warrants a slightly more in depth explanation.
 
-Recall that we fit the salary data using `Race`, `Sex`, and `Age`. Since `Race` and `Sex` are categorical, we converted them to dummy variables using the `get_dummies()` method. Note that we also passed two additional arguments, ```drop_first=True``` and ```dtype=float```. The ```drop_first=True``` argument removes the first level for each categorical variable and the ```dtype=float``` argument converts the data type of all of the dummy variables to float. The data must be float in order to obtain accurate statistical results from statsmodel. The end result was a pandas DataFrame consisting of the encoded variables for `Race` and `Sex`. Since `Age` is not a categorical variable, we just added it to the encoded `Race` and `Sex` DataFrame using ```pd.concat()```. Finally, note that y itself returns a pandas DataFrame with two columns as y itself was originally a categorical variable. With that, it's time to try and define a logistic regression model on your own!
+Recall that we fit the salary data using `Race`, `Sex`, and `Age`. Since `Race` and `Sex` are categorical, we converted them to dummy variables using the `get_dummies()` method. The ```get_dummies()``` method will only convert `object` and `category` data types to dummy variables so it is safe to pass `Ages`. Note that we also passed two additional arguments, ```drop_first=True``` and ```dtype=float```. The ```drop_first=True``` argument removes the first level for each categorical variable and the ```dtype=float``` argument converts the data type of all of the dummy variables to float. The data must be float in order to obtain accurate statistical results from statsmodel. Finally, note that y itself returns a pandas DataFrame with two columns as y itself was originally a categorical variable. With that, it's time to try and define a logistic regression model on your own!
 
 ## Your Turn - Step 1: Import the Data
 
@@ -58,7 +56,7 @@ Import the data stored in the file **titanic.csv**.
 
 
 ```python
-#Your code here
+# Your code here
 ```
 
 ## Step 2: Define X and Y
@@ -67,7 +65,7 @@ For your first foray into logistic regression, you are going to attempt to build
 
 
 ```python
-#Your code here
+# Your code here
 ```
 
 ## Step 3: Fit the model
@@ -89,7 +87,7 @@ Generate the summary table for your model. Then, comment on the p-values associa
 
 
 ```python
-#Your code here
+# Your code here
 ```
 
 ## Your analysis here
@@ -100,7 +98,7 @@ Create a new model, this time only using those features you determined were infl
 
 
 ```python
-#your code here
+# Your code here
 ```
 
 ## Summary 
