@@ -30,8 +30,11 @@ import statsmodels.api as sm
 salaries = pd.read_csv("salaries_final.csv", index_col = 0)
 
 #Step 2: Defining X and y
-y, X = dmatrices('Target ~ Age  + C(Race) + C(Sex)',
-                  salaries, return_type = "dataframe")
+# Convert race and sex using get_dummies
+x_feats = ["Race", "Sex", "Age"]
+X = pd.get_dummies(salaries[x_feats], drop_first=True, dtype=float)
+# Convert target using get dummies
+y = pd.get_dummies(salaries["Target"], dtype=float)
 
 #Step 3: Fitting the model
 logit_model = sm.Logit(y.iloc[:,1], X)
@@ -41,9 +44,9 @@ result = logit_model.fit()
 result.summary()
 ```
 
-Most of this should be fairly familiar to you: importing data with pandas, initializing a regression object, and calling the fit method of that object. However, step 2 warrants a slightly more in-depth explanation.
+Most of this should be fairly familiar to you; importing data with Pandas, initializing a regression object, and calling the fit method of that object. However, step 2 warrants a slightly more in depth explanation.
 
-The `dmatrices()` method above mirrors the R languages syntax. The first parameter is a string representing the conceptual formula for our model. Afterward, we pass the DataFrame where the data is stored, as well as an optional parameter for the format in which you would like the data returned. The general pattern for defining the formula string is: `y_feature_name ~ x_feature1_name + x_feature2_name + ... + x_featuren_name`. You should also notice that two of the x features, Race and Sex, are wrapped in `C()`. This indicates that these variables are *categorical*, meaning that dummy variables need to be created in order to convert them to numerical quantities. Finally, note that y itself returns a pandas DataFrame with two columns as y itself was originally a categorical variable. With that, it's time to try and define a logistic regression model on your own! 
+Recall that we fit the salary data using `Race`, `Sex`, and `Age`. Since `Race` and `Sex` are categorical, we converted them to dummy variables using the `get_dummies()` method. The ```get_dummies()``` method will only convert `object` and `category` data types to dummy variables so it is safe to pass `Ages`. Note that we also passed two additional arguments, ```drop_first=True``` and ```dtype=float```. The ```drop_first=True``` argument removes the first level for each categorical variable and the ```dtype=float``` argument converts the data type of all of the dummy variables to float. The data must be float in order to obtain accurate statistical results from statsmodel. Finally, note that y itself returns a pandas DataFrame with two columns as y itself was originally a categorical variable. With that, it's time to try and define a logistic regression model on your own!
 
 ## Your Turn - Step 1: Import the Data
 
@@ -195,14 +198,14 @@ df.Survived.value_counts()
 
 
 ```python
-#Your code here
-from patsy import dmatrices
+# Your code here
+x_feats = ["Pclass", "Age", "SibSp", "Fare", "Sex", "Embarked"]
+X = pd.get_dummies(df[x_feats], drop_first=True, dtype=float)
+y = df["Survived"].astype(float)
 
-y, X = dmatrices('Survived ~ Pclass  + C(Sex) + Age + SibSp +  Fare + C(Embarked)',
-                  df, return_type = "dataframe")
-#Notes: PassengerId is simply a numerical ordering. No valuable information encoded here
-#Similarly, Name is not useful for predictions. 
-#P-values below should indicate such if students do include in initial formulation.
+# Have to dropna in order to fit the model
+X = X.dropna()
+y = y[y.index.isin(X.index)]
 ```
 
 ## Step 3: Fit the model
@@ -216,12 +219,13 @@ Stats models was unable to fit the model due to some Linear Algebra problems. Sp
 ```python
 # Your code here
 import statsmodels.api as sm
+X = sm.tools.add_constant(X)
 logit_model = sm.Logit(y, X)
 result = logit_model.fit()
 ```
 
     Optimization terminated successfully.
-             Current function value: 0.444229
+             Current function value: 0.443267
              Iterations 6
 
 
@@ -231,7 +235,7 @@ Generate the summary table for your model. Then, comment on the p-values associa
 
 
 ```python
-#Your code here
+# Your code here
 result.summary()
 ```
 
@@ -241,54 +245,54 @@ result.summary()
 <table class="simpletable">
 <caption>Logit Regression Results</caption>
 <tr>
-  <th>Dep. Variable:</th>     <td>Survived</td>     <th>  No. Observations:  </th>  <td>   712</td>  
+  <th>Dep. Variable:</th>     <td>Survived</td>     <th>  No. Observations:  </th>  <td>   714</td>  
 </tr>
 <tr>
-  <th>Model:</th>               <td>Logit</td>      <th>  Df Residuals:      </th>  <td>   704</td>  
+  <th>Model:</th>               <td>Logit</td>      <th>  Df Residuals:      </th>  <td>   706</td>  
 </tr>
 <tr>
   <th>Method:</th>               <td>MLE</td>       <th>  Df Model:          </th>  <td>     7</td>  
 </tr>
 <tr>
-  <th>Date:</th>          <td>Tue, 23 Apr 2019</td> <th>  Pseudo R-squ.:     </th>  <td>0.3417</td>  
+  <th>Date:</th>          <td>Wed, 24 Jul 2019</td> <th>  Pseudo R-squ.:     </th>  <td>0.3437</td>  
 </tr>
 <tr>
-  <th>Time:</th>              <td>16:19:07</td>     <th>  Log-Likelihood:    </th> <td> -316.29</td> 
+  <th>Time:</th>              <td>18:11:50</td>     <th>  Log-Likelihood:    </th> <td> -316.49</td> 
 </tr>
 <tr>
-  <th>converged:</th>           <td>True</td>       <th>  LL-Null:           </th> <td> -480.45</td> 
+  <th>converged:</th>           <td>True</td>       <th>  LL-Null:           </th> <td> -482.26</td> 
 </tr>
 <tr>
-  <th> </th>                      <td> </td>        <th>  LLR p-value:       </th> <td>5.360e-67</td>
+  <th> </th>                      <td> </td>        <th>  LLR p-value:       </th> <td>1.103e-67</td>
 </tr>
 </table>
 <table class="simpletable">
 <tr>
-          <td></td>            <th>coef</th>     <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
+       <td></td>         <th>coef</th>     <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
 </tr>
 <tr>
-  <th>Intercept</th>        <td>    5.6378</td> <td>    0.633</td> <td>    8.901</td> <td> 0.000</td> <td>    4.396</td> <td>    6.879</td>
+  <th>const</th>      <td>    5.6503</td> <td>    0.633</td> <td>    8.921</td> <td> 0.000</td> <td>    4.409</td> <td>    6.892</td>
 </tr>
 <tr>
-  <th>C(Sex)[T.male]</th>   <td>   -2.6168</td> <td>    0.217</td> <td>  -12.040</td> <td> 0.000</td> <td>   -3.043</td> <td>   -2.191</td>
+  <th>Pclass</th>     <td>   -1.2118</td> <td>    0.163</td> <td>   -7.433</td> <td> 0.000</td> <td>   -1.531</td> <td>   -0.892</td>
 </tr>
 <tr>
-  <th>C(Embarked)[T.Q]</th> <td>   -0.8155</td> <td>    0.598</td> <td>   -1.363</td> <td> 0.173</td> <td>   -1.988</td> <td>    0.357</td>
+  <th>Age</th>        <td>   -0.0431</td> <td>    0.008</td> <td>   -5.250</td> <td> 0.000</td> <td>   -0.059</td> <td>   -0.027</td>
 </tr>
 <tr>
-  <th>C(Embarked)[T.S]</th> <td>   -0.4036</td> <td>    0.270</td> <td>   -1.494</td> <td> 0.135</td> <td>   -0.933</td> <td>    0.126</td>
+  <th>SibSp</th>      <td>   -0.3806</td> <td>    0.125</td> <td>   -3.048</td> <td> 0.002</td> <td>   -0.625</td> <td>   -0.136</td>
 </tr>
 <tr>
-  <th>Pclass</th>           <td>   -1.2102</td> <td>    0.163</td> <td>   -7.427</td> <td> 0.000</td> <td>   -1.530</td> <td>   -0.891</td>
+  <th>Fare</th>       <td>    0.0012</td> <td>    0.002</td> <td>    0.474</td> <td> 0.636</td> <td>   -0.004</td> <td>    0.006</td>
 </tr>
 <tr>
-  <th>Age</th>              <td>   -0.0433</td> <td>    0.008</td> <td>   -5.263</td> <td> 0.000</td> <td>   -0.059</td> <td>   -0.027</td>
+  <th>Sex_male</th>   <td>   -2.6236</td> <td>    0.217</td> <td>  -12.081</td> <td> 0.000</td> <td>   -3.049</td> <td>   -2.198</td>
 </tr>
 <tr>
-  <th>SibSp</th>            <td>   -0.3796</td> <td>    0.125</td> <td>   -3.043</td> <td> 0.002</td> <td>   -0.624</td> <td>   -0.135</td>
+  <th>Embarked_Q</th> <td>   -0.8260</td> <td>    0.598</td> <td>   -1.381</td> <td> 0.167</td> <td>   -1.999</td> <td>    0.347</td>
 </tr>
 <tr>
-  <th>Fare</th>             <td>    0.0012</td> <td>    0.002</td> <td>    0.474</td> <td> 0.635</td> <td>   -0.004</td> <td>    0.006</td>
+  <th>Embarked_S</th> <td>   -0.4130</td> <td>    0.269</td> <td>   -1.533</td> <td> 0.125</td> <td>   -0.941</td> <td>    0.115</td>
 </tr>
 </table>
 
@@ -303,10 +307,15 @@ Create a new model, this time only using those features you determined were infl
 
 
 ```python
-#your code here
-y, X = dmatrices('Survived ~ Pclass  + C(Sex) + Age + SibSp ',
-                  df, return_type = "dataframe")
+# Your code here
+x_feats = ["Pclass", "Age", "SibSp", "Sex"]
+X = pd.get_dummies(df[x_feats], drop_first=True, dtype=float)
+y = df["Survived"].astype(float)
 
+X = X.dropna()
+y = y[y.index.isin(X.index)]
+
+X = sm.tools.add_constant(X)
 logit_model = sm.Logit(y, X)
 result = logit_model.fit()
 
@@ -333,10 +342,10 @@ result.summary()
   <th>Method:</th>               <td>MLE</td>       <th>  Df Model:          </th>  <td>     4</td>  
 </tr>
 <tr>
-  <th>Date:</th>          <td>Tue, 23 Apr 2019</td> <th>  Pseudo R-squ.:     </th>  <td>0.3399</td>  
+  <th>Date:</th>          <td>Wed, 24 Jul 2019</td> <th>  Pseudo R-squ.:     </th>  <td>0.3399</td>  
 </tr>
 <tr>
-  <th>Time:</th>              <td>16:19:07</td>     <th>  Log-Likelihood:    </th> <td> -318.36</td> 
+  <th>Time:</th>              <td>18:11:50</td>     <th>  Log-Likelihood:    </th> <td> -318.36</td> 
 </tr>
 <tr>
   <th>converged:</th>           <td>True</td>       <th>  LL-Null:           </th> <td> -482.26</td> 
@@ -347,22 +356,22 @@ result.summary()
 </table>
 <table class="simpletable">
 <tr>
-         <td></td>           <th>coef</th>     <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
+      <td></td>        <th>coef</th>     <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
 </tr>
 <tr>
-  <th>Intercept</th>      <td>    5.6008</td> <td>    0.543</td> <td>   10.306</td> <td> 0.000</td> <td>    4.536</td> <td>    6.666</td>
+  <th>const</th>    <td>    5.6008</td> <td>    0.543</td> <td>   10.306</td> <td> 0.000</td> <td>    4.536</td> <td>    6.666</td>
 </tr>
 <tr>
-  <th>C(Sex)[T.male]</th> <td>   -2.6235</td> <td>    0.215</td> <td>  -12.229</td> <td> 0.000</td> <td>   -3.044</td> <td>   -2.203</td>
+  <th>Pclass</th>   <td>   -1.3174</td> <td>    0.141</td> <td>   -9.350</td> <td> 0.000</td> <td>   -1.594</td> <td>   -1.041</td>
 </tr>
 <tr>
-  <th>Pclass</th>         <td>   -1.3174</td> <td>    0.141</td> <td>   -9.350</td> <td> 0.000</td> <td>   -1.594</td> <td>   -1.041</td>
+  <th>Age</th>      <td>   -0.0444</td> <td>    0.008</td> <td>   -5.442</td> <td> 0.000</td> <td>   -0.060</td> <td>   -0.028</td>
 </tr>
 <tr>
-  <th>Age</th>            <td>   -0.0444</td> <td>    0.008</td> <td>   -5.442</td> <td> 0.000</td> <td>   -0.060</td> <td>   -0.028</td>
+  <th>SibSp</th>    <td>   -0.3761</td> <td>    0.121</td> <td>   -3.106</td> <td> 0.002</td> <td>   -0.613</td> <td>   -0.139</td>
 </tr>
 <tr>
-  <th>SibSp</th>          <td>   -0.3761</td> <td>    0.121</td> <td>   -3.106</td> <td> 0.002</td> <td>   -0.613</td> <td>   -0.139</td>
+  <th>Sex_male</th> <td>   -2.6235</td> <td>    0.215</td> <td>  -12.229</td> <td> 0.000</td> <td>   -3.044</td> <td>   -2.203</td>
 </tr>
 </table>
 
