@@ -2,7 +2,7 @@
 # Fitting a Logistic Regression Model - Lab
 
 ## Introduction
-In the last lecture, you were given a broad overview of logistic regression. This included two separate packages for creating logistic regression models. In this lab, you'll be investigating fitting logistic regressions with statsmodels.
+You were previously given a broad overview of logistic regression. This included two separate packages for creating logistic regression models. In this lab, you'll be investigating fitting logistic regressions with statsmodels.
 
 
 
@@ -25,20 +25,18 @@ The corresponding code to these four steps was:
 
 ```
 import pandas as pd
-from patsy import dmatrices
 import statsmodels.api as sm
 
 #Step 1: Importing the data
 salaries = pd.read_csv("salaries_final.csv", index_col = 0)
 
 #Step 2: Defining X and y
-# Convert race and sex using get_dummies
 x_feats = ["Race", "Sex", "Age"]
 X = pd.get_dummies(salaries[x_feats], drop_first=True, dtype=float)
-# Convert target using get dummies
 y = pd.get_dummies(salaries["Target"], dtype=float)
 
 #Step 3: Fitting the model
+X = sm.add_constant(X)
 logit_model = sm.Logit(y.iloc[:,1], X)
 result = logit_model.fit()
 
