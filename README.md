@@ -208,14 +208,6 @@ df.Survived.value_counts()
 
 
 
-## Step 3: Fit the model
-
-Now with everything in place, initialize a regression object and fit your model!
-
-### Warning: If you receive an error of the form "LinAlgError: Singular matrix"
-
-Stats models was unable to fit the model due to some Linear Algebra problems. Specifically, the matrix was not invertible due to not being full rank. In layman's terms, there was a lot of redundant, superfluous data. Try removing some features from the model and running it again.
-
 
 ```python
 # __SOLUTION__ 
@@ -229,14 +221,18 @@ X = X.dropna()
 y = y[y.index.isin(X.index)]
 ```
 
+## Step 3: Fit the model
+
+Now with everything in place, initialize a regression object and fit your model!
+
+### Warning: If you receive an error of the form "LinAlgError: Singular matrix"
+
+Stats models was unable to fit the model due to some Linear Algebra problems. Specifically, the matrix was not invertible due to not being full rank. In layman's terms, there was a lot of redundant, superfluous data. Try removing some features from the model and running it again.
+
 
 ```python
 # Your code here
 ```
-
-## Step 4: Analyzing results
-
-Generate the summary table for your model. Then, comment on the p-values associated with the various features you chose.
 
 
 ```python
@@ -253,12 +249,14 @@ result = logit_model.fit()
              Iterations 6
 
 
+## Step 4: Analyzing results
+
+Generate the summary table for your model. Then, comment on the p-values associated with the various features you chose.
+
 
 ```python
 # Your code here
 ```
-
-## Your analysis here
 
 
 ```python
@@ -326,6 +324,15 @@ result.summary()
 
 
 
+## Your analysis here
+
+
+```python
+# Based on our P-values, most of the current features appear to be significant based on a .05 significance level. 
+# That said, the 'Embarked' and 'Fare' features were not significant based on their higher p-values.
+
+```
+
 ## Level - up
 
 Create a new model, this time only using those features you determined were influential based on your analysis in step 4.
@@ -334,10 +341,6 @@ Create a new model, this time only using those features you determined were infl
 ```python
 # Your code here
 ```
-
-## Summary 
-
-Well done! In this lab, you practiced using stats models to build a logistic regression model. You then reviewed interpreting the results, building upon your previous stats knowledge, similar to linear regression. Continue on to take a look at building logistic regression models in Sci-kit learn!
 
 
 ```python
@@ -411,3 +414,15 @@ result.summary()
 </table>
 
 
+
+
+```python
+# __SOLUTION__
+
+# Note how removing the insignificant features had little impact on the $R^2$ value 
+# of our model.
+```
+
+## Summary 
+
+Well done! In this lab, you practiced using stats models to build a logistic regression model. You then reviewed interpreting the results, building upon your previous stats knowledge, similar to linear regression. Continue on to take a look at building logistic regression models in Sci-kit learn!
