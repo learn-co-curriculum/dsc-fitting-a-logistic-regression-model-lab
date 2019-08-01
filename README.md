@@ -280,10 +280,10 @@ result.summary()
   <th>Method:</th>               <td>MLE</td>       <th>  Df Model:          </th>  <td>     7</td>  
 </tr>
 <tr>
-  <th>Date:</th>          <td>Wed, 24 Jul 2019</td> <th>  Pseudo R-squ.:     </th>  <td>0.3437</td>  
+  <th>Date:</th>          <td>Thu, 01 Aug 2019</td> <th>  Pseudo R-squ.:     </th>  <td>0.3437</td>  
 </tr>
 <tr>
-  <th>Time:</th>              <td>18:11:50</td>     <th>  Log-Likelihood:    </th> <td> -316.49</td> 
+  <th>Time:</th>              <td>16:12:26</td>     <th>  Log-Likelihood:    </th> <td> -316.49</td> 
 </tr>
 <tr>
   <th>converged:</th>           <td>True</td>       <th>  LL-Null:           </th> <td> -482.26</td> 
@@ -328,6 +328,7 @@ result.summary()
 
 
 ```python
+# __SOLUTION__
 # Based on our P-values, most of the current features appear to be significant based on a .05 significance level. 
 # That said, the 'Embarked' and 'Fare' features were not significant based on their higher p-values.
 
@@ -380,10 +381,10 @@ result.summary()
   <th>Method:</th>               <td>MLE</td>       <th>  Df Model:          </th>  <td>     4</td>  
 </tr>
 <tr>
-  <th>Date:</th>          <td>Wed, 24 Jul 2019</td> <th>  Pseudo R-squ.:     </th>  <td>0.3399</td>  
+  <th>Date:</th>          <td>Thu, 01 Aug 2019</td> <th>  Pseudo R-squ.:     </th>  <td>0.3399</td>  
 </tr>
 <tr>
-  <th>Time:</th>              <td>18:11:50</td>     <th>  Log-Likelihood:    </th> <td> -318.36</td> 
+  <th>Time:</th>              <td>16:12:30</td>     <th>  Log-Likelihood:    </th> <td> -318.36</td> 
 </tr>
 <tr>
   <th>converged:</th>           <td>True</td>       <th>  LL-Null:           </th> <td> -482.26</td> 
