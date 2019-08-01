@@ -90,13 +90,6 @@ Generate the summary table for your model. Then, comment on the p-values associa
 
 ## Your analysis here
 
-
-```python
-# Based on our P-values, most of the current features appear to be significant based on a .05 significance level. 
-# That said, the 'Embarked' and 'Fare' features were not significant based on their higher p-values.
-
-```
-
 ## Level - up
 
 Create a new model, this time only using those features you determined were influential based on your analysis in step 4.
