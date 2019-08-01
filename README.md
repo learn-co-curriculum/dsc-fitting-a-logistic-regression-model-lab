@@ -419,7 +419,7 @@ result.summary()
 
 ```python
 # __SOLUTION__
-
+# Comments:
 # Note how removing the insignificant features had little impact on the $R^2$ value 
 # of our model.
 ```
