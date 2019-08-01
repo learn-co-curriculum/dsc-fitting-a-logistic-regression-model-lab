@@ -4,6 +4,8 @@
 ## Introduction
 You were previously given a broad overview of logistic regression. This included two separate packages for creating logistic regression models. In this lab, you'll be investigating fitting logistic regressions with statsmodels.
 
+
+
 ## Objectives
 
 You will be able to:
@@ -48,7 +50,7 @@ Recall that we fit the salary data using `Race`, `Sex`, and `Age`. Since `Race` 
 
 ## Your Turn - Step 1: Import the Data
 
-Import the data stored in the file **titanic**.
+Import the data stored in the file **titanic.csv**.
 
 
 ```python
@@ -211,6 +213,7 @@ y = y[y.index.isin(X.index)]
 Now with everything in place, initialize a regression object and fit your model!
 
 ### Warning: If you receive an error of the form "LinAlgError: Singular matrix"
+
 Stats models was unable to fit the model due to some Linear Algebra problems. Specifically, the matrix was not invertible due to not being full rank. In layman's terms, there was a lot of redundant, superfluous data. Try removing some features from the model and running it again.
 
 
@@ -296,8 +299,7 @@ result.summary()
 
 
 
-# Your analysis here
-Based on our P-values, most of the current features appear to be significant based on a .05 significance level. That said, the 'Embarked' and 'Fare' features were not significant based on their higher p-values.
+## Your analysis here
 
 ## Level - up
 
@@ -375,9 +377,12 @@ result.summary()
 
 
 
-# Comments:
 
-Note how removing the insignificant features had little impact on the $R^2$ value of our model.
+```python
+
+# Note how removing the insignificant features had little impact on the $R^2$ value 
+# of our model.
+```
 
 ## Summary 
 
