@@ -15,7 +15,7 @@ You will be able to:
 
 ## Review
 
-The stats model example we covered had four essential parts:
+The statsmodels example we covered had four essential parts:
 * Importing the data
 * Defining X and y
 * Fitting the model
@@ -72,7 +72,7 @@ Now with everything in place, initialize a regression object and fit your model!
 
 ### Warning: If you receive an error of the form "LinAlgError: Singular matrix"
 
-Stats models was unable to fit the model due to some Linear Algebra problems. Specifically, the matrix was not invertible due to not being full rank. In layman's terms, there was a lot of redundant, superfluous data. Try removing some features from the model and running it again.
+Statsmodels was unable to fit the model due to some Linear Algebra problems. Specifically, the matrix was not invertible due to not being full rank. In layman's terms, there was a lot of redundant, superfluous data. Try removing some features from the model and running it again.
 
 
 ```python
@@ -101,4 +101,4 @@ Create a new model, this time only using those features you determined were infl
 
 ## Summary 
 
-Well done! In this lab, you practiced using stats models to build a logistic regression model. You then reviewed interpreting the results, building upon your previous stats knowledge, similar to linear regression. Continue on to take a look at building logistic regression models in Sci-kit learn!
+Well done! In this lab, you practiced using statsmodels to build a logistic regression model. You then reviewed interpreting the results, building upon your previous stats knowledge, similar to linear regression. Continue on to take a look at building logistic regression models in Sci-kit learn!
